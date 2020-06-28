@@ -1,0 +1,6 @@
+{
+  "\"**/*.+(js|json|ts|tsx|scss)\"": [
+    "prettier-fix",
+    "git add"
+  ]
+}
