@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
+type ThemeState = {
+	color: string;
+};
+
+const ThemeContext = React.createContext<ThemeState | null>(null);
+
 function Counter() {
-	const [name, setName] = useState('');
 	const [count, setCount] = useState(0);
-
-	useEffect(() => {
-		console.log('useEffect called');
-		document.title = name;
-	});
-
-	const nameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setName(event.currentTarget.value);
-	};
+	const { color } = React.useContext(ThemeContext)!;
 
 	const counterClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		setCount(count + 1);
 	};
 
 	return (
-		<div>
-			<label>What is your name</label>
-			<br />
-			<input onChange={nameChange} />
-			<br />
+		<div style={{ color: color }}>
 			<label>The count is {count}</label>
 			<br />
 			<button onClick={counterClick}>Count</button>
@@ -31,11 +24,19 @@ function Counter() {
 	);
 }
 
+function Child2() {
+	const { color } = React.useContext(ThemeContext)!;
+	return <div style={{ color: color }}>Child2</div>;
+}
+
 const App: React.FC = () => {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<Counter />
+				<ThemeContext.Provider value={{ color: 'blue' }}>
+					<Counter />
+					<Child2 />
+				</ThemeContext.Provider>
 			</header>
 		</div>
 	);
